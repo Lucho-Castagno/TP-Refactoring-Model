@@ -3,9 +3,7 @@ Class {
 	#superclass : #Poste,
 	#instVars : [
 		'title',
-		'answers',
-		'topics',
-		'user'
+		'topics'
 	],
 	#category : #'TP-Refactoring-Model'
 }
@@ -39,7 +37,6 @@ Question >> addTopic: aTopic [
 { #category : #'initalize-release' }
 Question >> initialize [
 	super initialize.
-	answers := OrderedCollection new.
 	topics := OrderedCollection new.
 
 ]

@@ -44,6 +44,16 @@ CuOOra >> questions [
 	^ questions
 ]
 
+{ #category : #methods }
+CuOOra >> questionsAverageVotes [
+	^ ( self questions collect: [ :question | question positiveVotes size ] ) averageIfEmpty: 0.
+]
+
+{ #category : #methods }
+CuOOra >> questionsToday [
+	^ self questions select: [ :question | ( question timestamp asDate = Date today) ].
+]
+
 { #category : #accessing }
 CuOOra >> topics [
 	^ topics

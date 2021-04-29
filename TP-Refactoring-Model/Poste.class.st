@@ -33,8 +33,7 @@ Poste >> initialize [
 
 { #category : #methods }
 Poste >> negativeVotes [
-	^ votes select:[ :vote | vote isLike = false ].
-	
+	^ votes select:[ :vote | ( vote isLike ) not ].
 ]
 
 { #category : #methods }
@@ -57,7 +56,7 @@ Poste >> user [
 	^ user
 ]
 
-{ #category : #private }
+{ #category : #accessing }
 Poste >> user: anObject [
 	user := anObject
 ]

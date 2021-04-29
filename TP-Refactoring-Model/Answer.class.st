@@ -2,8 +2,7 @@ Class {
 	#name : #Answer,
 	#superclass : #Poste,
 	#instVars : [
-		'question',
-		'user'
+		'question'
 	],
 	#category : #'TP-Refactoring-Model'
 }
@@ -15,11 +14,6 @@ Answer class >> new: anAnswer user: aUser question: aQuestion [
 		user: aUser;
 		question: aQuestion;
 		yourself
-]
-
-{ #category : #accessing }
-Answer >> isTopAnswer [
-	^ self positiveVotes >=  ((question sum: [:answer | answer positiveVotes size ]) / question answer size )
 ]
 
 { #category : #private }

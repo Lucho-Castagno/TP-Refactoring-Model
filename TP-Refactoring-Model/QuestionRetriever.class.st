@@ -25,53 +25,49 @@ QuestionRetriever >> cuoora: aCuooraInstance [
 
 { #category : #retrieving }
 QuestionRetriever >> forNews: aUser [
-	| newsCol temp |
+	| newsCol |
 	newsCol := OrderedCollection new.
-	newsCol := cuoora questions select: [ :question | ( question timestamp asDate = Date today ) ].
-	temp := newsCol asSortedCollection:[ :aQuestion :anotherQuestion | aQuestion positiveVotes size > anotherQuestion positiveVotes size ].
-	^ temp last: (100 min: temp size).
+	newsCol := cuoora questionsToday.
+	^ self makingTemp: newsCol.
 ]
 
 { #category : #retrieving }
 QuestionRetriever >> forPopularToday: aUser [
-	| popularTCol temp averageVotes |
+	| popularTCol averageVotes |
 	popularTCol := OrderedCollection new.
-	popularTCol := cuoora questions select: [ :question | ( question timestamp asDate = Date today) ].
-	averageVotes := ( cuoora questions collect: [ :question | question positiveVotes size ] ) averageIfEmpty: 0.
-	temp := ( popularTCol select: [ :question | question positiveVotes size >= averageVotes ] ) asSortedCollection: [ :aQuestion :anotherQuestion | aQuestion positiveVotes size > anotherQuestion positiveVotes size ].
-	^ temp last: ( 100 min: temp size ).
+	popularTCol := cuoora questionsToday.
+	averageVotes := cuoora questionsAverageVotes.
+	^ self makingTemp: ( popularTCol select: [ :question | question positiveVotes size >= averageVotes ] ). 
+
 	
-
-
-"(a SumNumbers: [])AverageIfEmpty: [0]"
-
-"el cambio"
-"(cuoora questions collect: [ :question | question positiveVotes size ] ) averageIfEmpty [0]"
-"el original"
-"( cuoora questions sum: [ :question | question positiveVotes size ] ) / popularTCol size."
 ]
 
 { #category : #retrieving }
 QuestionRetriever >> forSocial: aUser [
-	| followingCol temp |
+	| followingCol |
 	followingCol := OrderedCollection new.
-	aUser following do:[ :follow | followingCol addAll: follow questions ].
-	temp := followingCol asSortedCollection:[ :aQuestion :anotherQuestion | aQuestion positiveVotes size > anotherQuestion positiveVotes size ].
-	^ temp last: (100 min: temp size).
+	aUser following do: [ :follow | followingCol addAll: follow questions ].
+	^ self makingTemp: followingCol.
 ]
 
 { #category : #retrieving }
 QuestionRetriever >> forTopics: aUser [
-	| topicsCol temp |
+	| topicsCol |
 	topicsCol := OrderedCollection new.
-	aUser topics do:[ :topic | topicsCol addAll: topic questions ].
-	temp := topicsCol asSortedCollection:[ :aQuestion :anotherQuestion | aQuestion positiveVotes size > anotherQuestion positiveVotes size ].
-	^ temp last: (100 min: temp size).
+	aUser topics do: [ :topic | topicsCol addAll: topic questions ].
+	^ self makingTemp: topicsCol. 
 ]
 
 { #category : #initializing }
 QuestionRetriever >> initialize [
 	option := #social
+]
+
+{ #category : #methods }
+QuestionRetriever >> makingTemp: aCollection [
+	| temp |
+	temp := aCollection asSortedCollection:[ :aQuestion :anotherQuestion | aQuestion positiveVotes size > anotherQuestion positiveVotes size ].
+	^ temp last: (100 min: temp size).
 ]
 
 { #category : #accesing }
@@ -98,5 +94,5 @@ QuestionRetriever >> retrieveQuestions: aUser [
 			questionRet := self forPopularToday: aUser.
 		].
 	
-	^questionRet reject:[:question | question user = aUser].
+	^ questionRet reject: [ :question | question user = aUser ].
 ]
