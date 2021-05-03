@@ -33,7 +33,7 @@ Poste >> initialize [
 
 { #category : #methods }
 Poste >> negativeVotes [
-	^ votes select:[ :vote | ( vote isLike ) not ].
+	^ votes select: [ :vote | ( vote isLike ) not ].
 ]
 
 { #category : #methods }
