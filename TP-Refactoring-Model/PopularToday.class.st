@@ -7,7 +7,6 @@ Class {
 { #category : #retrieving }
 PopularToday >> retrieveQuestions: aUser [
 	| popularTCol averageVotes questionRet |
-	popularTCol := OrderedCollection new.
 	popularTCol := cuoora questionsToday.
 	averageVotes := cuoora questionsAverageVotes.
 	questionRet := self makingTemp: ( popularTCol select: [ :question | question positiveVotes size >= averageVotes ] ). 
